@@ -1,14 +1,8 @@
-URLPY
-=====
+URLPY2
+======
 
 urlpy is a small library for URL parsing, cleanup, canonicalization and equivalence.
-You can find it at https://github.com/nexB/urlpy
-urlpy is MIT-licensed.
-
-urlpy is derived from Moz's url.py v0.2.0 and has been simplified to run on
-Python 2 and Python 3 using a pure Python library. (Newer version of Moz's
-url.py use a C++ extension).
-
+ 
 At the heart of the `urlpy` package is the `URL` object. You can get one by
 passing in a unicode or string object into the top-level `parse` method. All
 strings asre assumed to be Unicode::
@@ -112,6 +106,13 @@ and session ids. To strip out all such parameters from your url::
     >>> str(urlpy.parse('http://foo.com/?do=1&not=2&want=3&this=4').deparam(['do', 'not', 'want']))
     'http://foo.com/?this=4'
 
+`r_deparam`
+---------
+
+Same as `deparam` but uses regex::
+
+    >>> str(urlpy.parse('http://foo.com/?utm_a=1&utm_b=2&utm_c=3&utm_d=4').deparam(['utm_*',]))
+    'http://foo.com/'
 
 `abspath`
 ---------
@@ -171,10 +172,7 @@ Running tests
     pytest
 
 
-Authors
-=======
-
-- David Barts, Moz
-- Brandon Forehand, Moz
-- Dan Lecocq, Moz
-- Philippe Ombredanne for nexB Inc.
+Credits and License
+===================
+- This repository is originally forked from [nexB/urlpy](https://github.com/nexB/urlpy) which is derived from Moz's [url.py v0.2.0](https://github.com/seomoz/url-py) and has been simplified to run on Python 2 and Python 3 using a pure Python library. (Newer version of Moz's url.py use a C++ extension).
+- urlpy is MIT-licensed.
