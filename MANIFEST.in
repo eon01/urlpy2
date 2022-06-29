@@ -1,0 +1,11 @@
+
+include LICENSE
+include README.md
+include test.py
+include urlpy.py
+include MANIFEST.in
+include setup.py
+include setup.cfg
+include .gitignore
+
+global-exclude *.py[co] __pycache__ *.*~

@@ -1,0 +1,10 @@
+*.pyc
+build/
+dist/
+url.egg-info/
+.coverage
+/.pytest_cache/
+/tmp/
+/urlpy.egg-info/
+/bin/
+/lib/
