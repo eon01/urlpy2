@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(
-    name='urlpy',
+    name='urlpy2',
     version='0.5',
     description='Simple URL parsing, canonicalization and equivalence.',
     long_description='''

@@ -1,0 +1,25 @@
+Metadata-Version: 1.1
+Name: urlpy2
+Version: 0.5
+Summary: Simple URL parsing, canonicalization and equivalence.
+Home-page: http://github.com/eon01/urlpy2
+Author: Aymen El Amri based on code from nexB Inc
+Author-email: UNKNOWN
+License: MIT
+Description: 
+        
+        A library with helper functions to parse URLs, and sanitize and normalize them
+        in pure python.
+        
+        This includes support for escaping, unescaping, cleaning and sorting parameters
+        and query strings, and a little more sanitization.
+        
+        This version is a friendly fork of the upstream url.py from Moz to keep a pure
+        Python version around to run on Python 2 and 3 and all OSes.
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Internet :: WWW/HTTP
