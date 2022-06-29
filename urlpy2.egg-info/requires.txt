@@ -1,1 +1,0 @@
-publicsuffix2>=2.20191221
