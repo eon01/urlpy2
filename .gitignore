@@ -5,6 +5,6 @@ url.egg-info/
 .coverage
 /.pytest_cache/
 /tmp/
-/urlpy.egg-info/
+/urlpy2.egg-info/
 /bin/
 /lib/
