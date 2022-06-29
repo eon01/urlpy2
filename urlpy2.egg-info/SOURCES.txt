@@ -4,7 +4,7 @@ MANIFEST.in
 README.md
 setup.cfg
 setup.py
-urlpy.py
+urlpy2.py
 urlpy2.egg-info/PKG-INFO
 urlpy2.egg-info/SOURCES.txt
 urlpy2.egg-info/dependency_links.txt

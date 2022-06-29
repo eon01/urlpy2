@@ -28,7 +28,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys
-import urlpy as url
+import urlpy2 as url
 
 try:
     # Python 2

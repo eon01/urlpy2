@@ -1,155 +1,162 @@
-URLPY2
-======
+# URLPY2
 
-urlpy is a small library for URL parsing, cleanup, canonicalization and equivalence.
+urlpy2 is a small library for URL parsing, cleanup, canonicalization and equivalence.
  
 At the heart of the `urlpy` package is the `URL` object. You can get one by
 passing in a unicode or string object into the top-level `parse` method. All
 strings asre assumed to be Unicode:
 
-    import urlpy
-    myurl = url.parse('http://foo.com')
+```python
+import urlpy2 as urlpy
+myurl = urlpy.parse('http://foo.com')
+```
 
 The workflow is that you'll chain a number of permutations together to get the type
 of URL you're after:
 
-    # Defrag, remove some parameters and give me a string
-    str(urlpy.parse(...).defrag().deparam(['utm_source']))
+```python
+# Defrag, remove some parameters and give me a string
+str(urlpy.parse(...).defrag().deparam(['utm_source']))
 
-    # Escape the path, and punycode the host, and give me a string
-    str(urlpy.parse(...).escape().punycode())
+# Escape the path, and punycode the host, and give me a string
+str(urlpy.parse(...).escape().punycode())
 
-    # Give me the absolute path url as some encoding
-    str(urlpy.parse(...).abspath()).encode('some encoding')
+# Give me the absolute path url as some encoding
+str(urlpy.parse(...).abspath()).encode('some encoding')
+```
 
-
-URL Equivalence
-===============
+## URL Equivalence
 
 URL objects compared with `==` are interpreted very strictly, but for a more
 lax interpretation, consider using `equiv` to test if two urls are functionally
 equivalent:
 
-    a = urlpy.parse(u'https://föo.com:443/a/../b/.?b=2&&&&&&a=1')
-    b = urlpy.parse(u'https://xn--fo-fka.COM/b/?a=1&b=2')
+```python
+a = urlpy.parse(u'https://föo.com:443/a/../b/.?b=2&&&&&&a=1')
+b = urlpy.parse(u'https://xn--fo-fka.COM/b/?a=1&b=2')
 
-    # These urls are not equal
-    assert(a != b)
+# These urls are not equal
+assert(a != b)
 
-    # But they are equivalent
-    assert(a.equiv(b))
-    assert(b.equiv(a))
+# But they are equivalent
+assert(a.equiv(b))
+assert(b.equiv(a))
+```
 
 This equivalence test takes default ports for common schemes into account (so
 if both urls are the same scheme, but one explicitly specifies the default
 port), punycoding, case of the host name, and parameter order.
 
 
-Absolute URLs
-=============
+## Absolute URLs
 
 You can perform many operations on relative urls (those without a hostname),
 but punycoding and unpunycoding are not among them. You can also tell whether
 or not a url is absolute:
 
-    a = urlpy.parse('foo/bar.html')
-    assert(not a.absolute())
+```python
+a = urlpy.parse('foo/bar.html')
+assert(not a.absolute())
+```
 
-
-Chaining
-========
+## Chaining
 
 Many of the methods on the `URL` class can be chained to produce a number of
 effects in sequence:
 
-    import url
+```python
+import urlpy2 as urlpy
 
-    # Create a url object
-    myurl = urlpy.URL.parse('http://www.FOO.com/bar?utm_source=foo#what')
-    # Remove some parameters and the fragment
-    print(myurl.defrag().deparam(['utm_source']))
+# Create a url object
+myurl = urlpy.URL.parse('http://www.FOO.com/bar?utm_source=foo#what')
+# Remove some parameters and the fragment
+print(myurl.defrag().deparam(['utm_source']))
+```
 
 In fact, unless the function explicitly returns a string, then the method may
 be chained.
 
 
-`canonical`
------------
+### `canonical`
 
 According to the RFC, the order of parameters is not supposed to matter. In
 practice, it can (depending on how the server matches URL routes), but it's
 also helpful to be able to put parameters in a canonical ordering. This
 ordering happens to be alphabetical order:
 
-    >>> str(urlpy.parse('http://foo.com/?b=2&a=1&d=3').canonical())
-    'http://foo.com/?a=1&b=2&d=3'
+```python
+>>> str(urlpy.parse('http://foo.com/?b=2&a=1&d=3').canonical())
+'http://foo.com/?a=1&b=2&d=3'
+```
 
 
-`defrag`
---------
+### `defrag`
 
 Remove any fragment identifier from the url. This isn't part of the reuqest
 that gets sent to an HTTP server, and so it's often useful to remove the 
 fragment when doing url comparisons:
 
-    >>> str(urlpy.parse('http://foo.com/#foo').defrag())
-    'http://foo.com/'
+```python
+>>> str(urlpy.parse('http://foo.com/#foo').defrag())
+'http://foo.com/'
+```
 
-
-`deparam`
----------
+### `deparam`
 
 Some parameters are commonly added to urls that we may not be interested in. Or
 they may be misleading. Common examples include referrering pages, `utm_source`
 and session ids. To strip out all such parameters from your url:
 
-    >>> str(urlpy.parse('http://foo.com/?do=1&not=2&want=3&this=4').deparam(['do', 'not', 'want']))
-    'http://foo.com/?this=4'
+```python
+>>> str(urlpy.parse('http://foo.com/?do=1&not=2&want=3&this=4').deparam(['do', 'not', 'want']))
+'http://foo.com/?this=4'
+```
 
-`r_deparam`
----------
+### `r_deparam`
 
 Same as `deparam` but uses regex:
 
-    >>> str(urlpy.parse('http://foo.com/?utm_a=1&utm_b=2&utm_c=3&utm_d=4').deparam(['utm_*',]))
-    'http://foo.com/'
 
-`abspath`
----------
+```python
+>>> str(urlpy.parse('http://foo.com/?utm_a=1&utm_b=2&utm_c=3&utm_d=4').deparam(['utm_*',]))
+'http://foo.com/'
+```
+
+### `abspath`
 
 Like its `os.path` namesake, this makes sure that the path of the url is
 absolute. This includes removing redundant forward slashes, `.` and `..`:
 
-    >>> str(urlpy.parse('http://foo.com/foo/./bar/../a/b/c/../../d').abspath())
-    'http://foo.com/foo/a/d'
+```python
+>>> str(urlpy.parse('http://foo.com/foo/./bar/../a/b/c/../../d').abspath())
+'http://foo.com/foo/a/d'
+```
 
-
-`escape`
---------
+### `escape`
 
 Non-ASCII characters in the path are typically encoded as UTF-8 and then
 escaped as `%HH` where `H` are hexidecimal values. It's important to note that
 the `escape` function is idempotent, and can be called repeatedly:
 
-    >>> str(urlpy.parse(u'http://foo.com/ümlaut').escape())
-    'http://foo.com/%C3%BCmlaut'
-    >>> str(urlpy.parse(u'http://foo.com/ümlaut').escape().escape())
-    'http://foo.com/%C3%BCmlaut'
+```python
+>>> str(urlpy.parse(u'http://foo.com/ümlaut').escape())
+'http://foo.com/%C3%BCmlaut'
+>>> str(urlpy.parse(u'http://foo.com/ümlaut').escape().escape())
+'http://foo.com/%C3%BCmlaut'
+```
 
-
-`unescape`
-----------
+### `unescape`
 
 If you have a URL that might have been escaped before it was given to you, but
 you'd like to display something a little more meaningful than `%C3%BCmlaut`, 
 you can unescape the path:
 
-    >>> print(urlpy.parse('http://foo.com/%C3%BCmlaut').unescape())
-    http://foo.com/ümlaut
+```python
+>>> print(urlpy.parse('http://foo.com/%C3%BCmlaut').unescape())
+http://foo.com/ümlaut
+```
 
-
-Properties
-==========
+## Properties
 
 Many attributes are available on URL objects:
 
@@ -165,14 +172,15 @@ Many attributes are available on URL objects:
 - `unicode` -- a unicode version of the URL
 
 
-Running tests
-=============
-:
-    ./configure
-    pytest
+## Running tests
+
+```bash
+./configure
+pytest
+```
 
 
-Credits and License
-===================
+## Credits and License
+
 - This repository is originally forked from [nexB/urlpy](https://github.com/nexB/urlpy) which is derived from Moz's [url.py v0.2.0](https://github.com/seomoz/url-py) and has been simplified to run on Python 2 and Python 3 using a pure Python library. (Newer version of Moz's url.py use a C++ extension).
 - urlpy is MIT-licensed.
