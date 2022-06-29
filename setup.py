@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='urlpy',
-    version='0.4',
+    version='0.5',
     description='Simple URL parsing, canonicalization and equivalence.',
     long_description='''
 
