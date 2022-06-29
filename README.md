@@ -5,13 +5,13 @@ urlpy is a small library for URL parsing, cleanup, canonicalization and equivale
  
 At the heart of the `urlpy` package is the `URL` object. You can get one by
 passing in a unicode or string object into the top-level `parse` method. All
-strings asre assumed to be Unicode::
+strings asre assumed to be Unicode:
 
     import urlpy
     myurl = url.parse('http://foo.com')
 
 The workflow is that you'll chain a number of permutations together to get the type
-of URL you're after::
+of URL you're after:
 
     # Defrag, remove some parameters and give me a string
     str(urlpy.parse(...).defrag().deparam(['utm_source']))
@@ -28,7 +28,7 @@ URL Equivalence
 
 URL objects compared with `==` are interpreted very strictly, but for a more
 lax interpretation, consider using `equiv` to test if two urls are functionally
-equivalent::
+equivalent:
 
     a = urlpy.parse(u'https://föo.com:443/a/../b/.?b=2&&&&&&a=1')
     b = urlpy.parse(u'https://xn--fo-fka.COM/b/?a=1&b=2')
@@ -50,7 +50,7 @@ Absolute URLs
 
 You can perform many operations on relative urls (those without a hostname),
 but punycoding and unpunycoding are not among them. You can also tell whether
-or not a url is absolute::
+or not a url is absolute:
 
     a = urlpy.parse('foo/bar.html')
     assert(not a.absolute())
@@ -60,7 +60,7 @@ Chaining
 ========
 
 Many of the methods on the `URL` class can be chained to produce a number of
-effects in sequence::
+effects in sequence:
 
     import url
 
@@ -79,7 +79,7 @@ be chained.
 According to the RFC, the order of parameters is not supposed to matter. In
 practice, it can (depending on how the server matches URL routes), but it's
 also helpful to be able to put parameters in a canonical ordering. This
-ordering happens to be alphabetical order::
+ordering happens to be alphabetical order:
 
     >>> str(urlpy.parse('http://foo.com/?b=2&a=1&d=3').canonical())
     'http://foo.com/?a=1&b=2&d=3'
@@ -90,7 +90,7 @@ ordering happens to be alphabetical order::
 
 Remove any fragment identifier from the url. This isn't part of the reuqest
 that gets sent to an HTTP server, and so it's often useful to remove the 
-fragment when doing url comparisons::
+fragment when doing url comparisons:
 
     >>> str(urlpy.parse('http://foo.com/#foo').defrag())
     'http://foo.com/'
@@ -101,7 +101,7 @@ fragment when doing url comparisons::
 
 Some parameters are commonly added to urls that we may not be interested in. Or
 they may be misleading. Common examples include referrering pages, `utm_source`
-and session ids. To strip out all such parameters from your url::
+and session ids. To strip out all such parameters from your url:
 
     >>> str(urlpy.parse('http://foo.com/?do=1&not=2&want=3&this=4').deparam(['do', 'not', 'want']))
     'http://foo.com/?this=4'
@@ -109,7 +109,7 @@ and session ids. To strip out all such parameters from your url::
 `r_deparam`
 ---------
 
-Same as `deparam` but uses regex::
+Same as `deparam` but uses regex:
 
     >>> str(urlpy.parse('http://foo.com/?utm_a=1&utm_b=2&utm_c=3&utm_d=4').deparam(['utm_*',]))
     'http://foo.com/'
@@ -118,7 +118,7 @@ Same as `deparam` but uses regex::
 ---------
 
 Like its `os.path` namesake, this makes sure that the path of the url is
-absolute. This includes removing redundant forward slashes, `.` and `..`::
+absolute. This includes removing redundant forward slashes, `.` and `..`:
 
     >>> str(urlpy.parse('http://foo.com/foo/./bar/../a/b/c/../../d').abspath())
     'http://foo.com/foo/a/d'
@@ -129,7 +129,7 @@ absolute. This includes removing redundant forward slashes, `.` and `..`::
 
 Non-ASCII characters in the path are typically encoded as UTF-8 and then
 escaped as `%HH` where `H` are hexidecimal values. It's important to note that
-the `escape` function is idempotent, and can be called repeatedly::
+the `escape` function is idempotent, and can be called repeatedly:
 
     >>> str(urlpy.parse(u'http://foo.com/ümlaut').escape())
     'http://foo.com/%C3%BCmlaut'
@@ -142,7 +142,7 @@ the `escape` function is idempotent, and can be called repeatedly::
 
 If you have a URL that might have been escaped before it was given to you, but
 you'd like to display something a little more meaningful than `%C3%BCmlaut`, 
-you can unescape the path::
+you can unescape the path:
 
     >>> print(urlpy.parse('http://foo.com/%C3%BCmlaut').unescape())
     http://foo.com/ümlaut
@@ -167,7 +167,7 @@ Many attributes are available on URL objects:
 
 Running tests
 =============
-::
+:
     ./configure
     pytest
 
