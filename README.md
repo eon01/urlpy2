@@ -25,6 +25,12 @@ str(urlpy.parse(...).escape().punycode())
 str(urlpy.parse(...).abspath()).encode('some encoding')
 ```
 
+## Installation
+
+```
+pip install urlpy2
+```
+
 ## URL Equivalence
 
 URL objects compared with `==` are interpreted very strictly, but for a more

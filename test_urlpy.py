@@ -101,7 +101,7 @@ def test_deparam_case_insensitivity():
 
 def test_r_deparam_sane():
     def test(bad, good):
-        assert_equal(url.parse(bad).r_deparam(['c']).unicode, good)
+        assert_equal(url.parse(bad).r_deparam(['c.*']).unicode, good)
 
     examples = [
         ('?a=1&b=2&c1=3&d=4', '?a=1&b=2&d=4'),  # Maintains order
