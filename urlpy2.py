@@ -35,6 +35,11 @@ from __future__ import unicode_literals
 import codecs
 import re
 import sys
+import os
+import json
+import ast
+from functools import lru_cache
+
 
 try:
     import urlparse
@@ -80,11 +85,17 @@ PORTS = {
     'https': 443
 }
 
+RULES_FILE = os.path.join(os.path.dirname(__file__), 'urlpy2-rules/data.min.json')
 
 def parse(url):
     '''Parse the provided url string and return an URL object'''
     return URL.parse(url)
 
+@lru_cache(maxsize=1)
+def access_rules_file():
+    with open(RULES_FILE, 'r') as json_data:
+        json_data = json.load(json_data)
+        return json_data
 
 class URL(object):
     '''
@@ -355,6 +366,28 @@ class URL(object):
             self.host = IDNA.decode(self.host.encode('utf-8'))[0]
             return self
         raise TypeError('Cannot unpunycode a relative url (%s)' % repr(self))
+            
+    def remove_tracking(self, remove_referall_marketing=True):
+        ''' Clean up the url by removing tracking parameters based on a CleanURLS collaborative list: https://gitlab.com/ClearURLs/rules/-/blob/master/data.min.json '''                
+        rules_data = access_rules_file()
+        def match_in_a_list(exceptions, url):
+            for exception in exceptions:
+                if re.match(url, exception):
+                    return True
+            return False            
+        for provider in rules_data['providers']:            
+            url_pattern = rules_data['providers'][provider]['urlPattern']
+            exceptions = rules_data['providers'][provider]['exceptions']
+            complete_provider = rules_data['providers'][provider]['completeProvider']                                                     
+            if not complete_provider:
+                if re.match(url_pattern, self.unicode) and not match_in_a_list(exceptions, self.unicode):
+                    rules = rules_data['providers'][provider]['rules']
+                    r_deparamed = self.r_deparam(rules)
+                    if remove_referall_marketing:
+                        referall_marketing = rules_data['providers'][provider]['referralMarketing']
+                        return r_deparamed.deparam(referall_marketing)
+                    return r_deparamed
+        return self
 
     @property
     def hostname(self):

@@ -122,6 +122,17 @@ Same as `deparam` but uses regex:
 'http://foo.com/'
 ```
 
+### `remove_tracking`
+
+Removes all tracking and referall marketing parameters from the URL based on [CleanURLs list](https://gitlab.com/ClearURLs/rules/-/raw/master/data.min.json).
+
+```python
+>>> str(urlpy.parse('https://www.google.com/search?q=python&oq=python&aqs=chrome..69i57j0l5.8984j0j7&sourceid=chrome&ie=UTF-8').remove_tracking())
+'https://www.google.com/search?q=python'
+```
+
+To keep the referall marketing parameters, use `remove_tracking(remove_referall_marketing=False)`.
+
 ### `abspath`
 
 Like its `os.path` namesake, this makes sure that the path of the url is
@@ -182,5 +193,5 @@ pytest
 
 ## Credits and License
 
-- This repository is originally forked from [nexB/urlpy](https://github.com/nexB/urlpy) which is derived from Moz's [url.py v0.2.0](https://github.com/seomoz/url-py) and has been simplified to run on Python 2 and Python 3 using a pure Python library. (Newer version of Moz's url.py use a C++ extension).
-- urlpy is MIT-licensed.
+- urlpy2 is originally forked from [nexB/urlpy](https://github.com/nexB/urlpy) which is derived from Moz's [url.py v0.2.0](https://github.com/seomoz/url-py) and has been simplified to run on Python 2 and Python 3 using a pure Python library. (Newer version of Moz's url.py use a C++ extension).
+- urlpy2 uses [CleanURLs rules data](https://gitlab.com/ClearURLs/rules) licensed under the GNU Lesser General Public License. Refer the the original author/license if you'd like to  update, distribute and copy their work. 

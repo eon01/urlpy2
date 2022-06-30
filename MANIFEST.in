@@ -2,7 +2,7 @@
 include LICENSE
 include README.md
 include test.py
-include urlpy.py
+include urlpy2/urlpy2.py
 include MANIFEST.in
 include setup.py
 include setup.cfg

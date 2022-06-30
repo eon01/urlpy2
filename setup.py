@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='urlpy2',
-    version='0.9',
+    version='1.0',
     description='Simple URL parsing, canonicalization and equivalence.',
     long_description_content_type='text/markdown',
     long_description='''
